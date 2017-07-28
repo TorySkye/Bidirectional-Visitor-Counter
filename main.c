@@ -44,6 +44,7 @@ void USART_init (uint16_t baud)
 	UCSRB = (1<<RXEN)|(1<<TXEN);
 	UCSRC = (1<<URSEL)|(1<<UCSZ1)|(1<<UCSZ0);
 }
+
 void USART_send (uint8_t data)
 {
 	while (!(UCSRA &(1<<UDRE)));
@@ -64,24 +65,24 @@ void USART_message (char *data)
 
 int main(void)
 {
-	DDRD = 0b00110000;						           /* Configure PortD as output */
-	PORTD = 0x00;							               /* Set LOW value to PORT D */
-	DDRA = 0x00;							               /* Configure PortA as input */
+	DDRD = 0b00110000;					/* Configure PortD as output */
+	PORTD = 0x00;						/* Set LOW value to PORT D */
+	DDRA = 0x00;						/* Configure PortA as input */
 	
 	USART_init (9600);
-	adc_init();								               /* ADC initialization */
+	adc_init();						/* ADC initialization */
 	lcd_init(LCD_DISP_ON);
 	
-	lcd_gotoxy(0,0);						            /* Set cursor to 1. row (row0) and 1. character */
+	lcd_gotoxy(0,0);					/* Set cursor to 1. row (row0) and 1. character */
 	lcd_puts("Welcome!");
 	_delay_ms(1000);
 	
-	ch2_read = read_adc_channel(2);			    /* Converting analog output of Digital light sensor */
+	ch2_read = read_adc_channel(2);			    	/* Converting analog output of Digital light sensor */
 	sprintf(ch2_string, "Reference value for 1. photoresistor: %d  \r\n", ch2_read);
 	USART_message(ch2_string);
 	ch2_ref = ch2_read;
 
-	ch3_read = read_adc_channel(3);			    /* Converting analog output of Digital light sensor */
+	ch3_read = read_adc_channel(3);			   	 /* Converting analog output of Digital light sensor */
 	sprintf(ch3_string, "Reference value for 2. photoresistor: %d  \r\n", ch3_read);
 	USART_message(ch3_string);
 	ch3_ref = ch3_read;
@@ -106,10 +107,10 @@ int main(void)
 				counter = 0;
 			}
 			PORTD |= (1<<PD4);
-			lcd_gotoxy(0,0);				            /* Set cursor to 1. row (row0) and 1. character */
+			lcd_gotoxy(0,0);			/* Set cursor to 1. row (row0) and 1. character */
 			lcd_puts("Direction: <--");
 			sprintf(num_in, "Number of visitors: %d ", counter);
-			lcd_gotoxy(0,1);				            /* Set cursor to 2. row (row1) and 1. character */
+			lcd_gotoxy(0,1);			/* Set cursor to 2. row (row1) and 1. character */
 			lcd_puts(num_in);
 			_delay_ms(1000);
 		}
@@ -137,14 +138,14 @@ int main(void)
 
 void ADC_ch2()
 {
-	ADC_ch2_value = read_adc_channel(2);	/* Converting analog output of Digital light sensor */	
+	ADC_ch2_value = read_adc_channel(2);			/* Converting analog output of Digital light sensor */	
 	sprintf(ch2_string, "Value of 1. photoresistor: %d  \r\n", ADC_ch2_value);
 	USART_message(ch2_string);
 }
 
 void ADC_ch3()
 {
-	ADC_ch3_value=read_adc_channel(3);		/*Converting analog output of Digital light sensor*/
+	ADC_ch3_value=read_adc_channel(3);			/*Converting analog output of Digital light sensor*/
 	sprintf(ch3_string, "Value of 2. photoresistor: %d  \r\n", ADC_ch3_value);
 	USART_message(ch3_string);
 	USART_send(10);
