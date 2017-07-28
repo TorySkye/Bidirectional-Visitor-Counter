@@ -17,18 +17,18 @@
 #include "lcd.h"
 
 /* Variable declarations */
+uint8_t data;
+uint8_t counter = 0;
 uint16_t ch2_ref;
 uint16_t ch3_ref;
 uint16_t ch2_read;
 uint16_t ch3_read;
-char ch2_string[20];
-char ch3_string[20];
-uint8_t data;
 uint16_t ADC_ch2_value;
 uint16_t ADC_ch3_value;
 char num_in[20];
 char num_out[20];
-uint8_t counter = 0;
+char ch2_string[20];
+char ch3_string[20];
 
 /* Function declarations */
 void ADC_ch2();
@@ -130,8 +130,6 @@ int main(void)
 		{
 			PORTD = 0x00;
 		}
-		ch2_last = ADC_ch2_value;
-		ch3_last = ADC_ch3_value;
 	}
 	return 0;
 }
