@@ -98,33 +98,51 @@ int main(void)
 	
 		if (ADC_ch2_value < (ch2_ref - 100))
 		{
-			if (counter > 0)
+			if (ADC_ch3_value < (ch3_ref - 100))
 			{
-				counter--;
+				counter = counter;
+				PORTD |= (1<<PD4);
+				PORTD |= (1<<PD5);
 			}
-			else if (counter == 0)
+			else
 			{
-				counter = 0;
+				if (counter > 0)
+				{
+					counter--;
+				}
+				else if (counter == 0)
+				{
+					counter = 0;
+				}
+				PORTD |= (1<<PD4);
+				lcd_gotoxy(0,0);			/* Set cursor to 1. row (row0) and 1. character */
+				lcd_puts("Direction: <--");
+				sprintf(num_in, "Number of visitors: %d ", counter);
+				lcd_gotoxy(0,1);			/* Set cursor to 2. row (row1) and 1. character */
+				lcd_puts(num_in);
+				_delay_ms(1000);
 			}
-			PORTD |= (1<<PD4);
-			lcd_gotoxy(0,0);			/* Set cursor to 1. row (row0) and 1. character */
-			lcd_puts("Direction: <--");
-			sprintf(num_in, "Number of visitors: %d ", counter);
-			lcd_gotoxy(0,1);			/* Set cursor to 2. row (row1) and 1. character */
-			lcd_puts(num_in);
-			_delay_ms(1000);
 		}
 		
 		else if (ADC_ch3_value < (ch3_ref - 100))
 		{
-			counter++;		
-			PORTD |= (1<<PD5);
-			lcd_gotoxy(0,0); 
-			lcd_puts("Direction: -->");
-			sprintf(num_out, "Number of visitors: %d", counter);
-			lcd_gotoxy(0,1); 
-			lcd_puts(num_out);
-			_delay_ms(1000);
+			if (ADC_ch2_value < (ch2_ref - 100))
+			{
+				counter = counter;
+				PORTD |= (1<<PD4);
+				PORTD |= (1<<PD5);
+			}
+			else
+			{
+				counter++;		
+				PORTD |= (1<<PD5);
+				lcd_gotoxy(0,0); 
+				lcd_puts("Direction: -->");
+				sprintf(num_out, "Number of visitors: %d", counter);
+				lcd_gotoxy(0,1); 
+				lcd_puts(num_out);
+				_delay_ms(1000);
+			}
 		}
 		else
 		{
