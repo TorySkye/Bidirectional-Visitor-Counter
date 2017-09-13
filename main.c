@@ -128,6 +128,5 @@ void ADC_ch2()
 
 void ADC_ch3()
 {
-	ADC_ch3_value=read_adc_channel(3);		/*Converting analog output of Digital light sensor*/
-
+	ADC_ch3_value = read_adc_channel(3);		/*Converting analog output of Digital light sensor*/
 }
